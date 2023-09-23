@@ -130,3 +130,26 @@ gp env HELLO='World''
 ```
 All future workspaces launched will set the env vars for all basj termianls opened in those workspaces.
 we can also set env vars in the `.gitpod.yml` but this can only contain non-sensitive env vars.
+
+#### AWS CLI Installation
+AWS CLI is installed for the project via basj script [`./bin/install_aws_cli``](./bin/install_aws_cli)
+
+[Getting Started Install (AWS CLI) ](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+
+[AWS CLI Env Vars](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)
+
+We can check if AWS credenrials is configured correctly by running the follwoing AWS CLI command : 
+```sh
+aws sts get-caller-identity
+```
+if it runs sucessfull you should a json payload returns looks like that : 
+```json
+{
+    "UserId": "AIDAFXIDQJJZGCGT5VGOH",
+    "Account": "123456789012",
+    "Arn": "arn:aws:iam::123456789012:user/hassan-adam"
+}
+```
+
+we'll need to generate AWS CLI credits from IAM user in order to  use  AWS CLI
+
