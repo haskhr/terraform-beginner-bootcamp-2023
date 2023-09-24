@@ -153,3 +153,59 @@ if it runs sucessfull you should a json payload returns looks like that :
 
 we'll need to generate AWS CLI credits from IAM user in order to  use  AWS CLI
 
+## Terraform Basics
+
+### Terraform Registery
+
+Terraform sources their providers and modules from terraform registery located at [registery.terraform.io](https://registry.terraform.io/) 
+
+- **Providers** is an interface APIs that will allow you to cretae resources in terrafrom .
+
+- **Modules** is a way to make a large amount of terraform code modular,portable and sharable . 
+
+[Random Terrafrom Provider ](https://registry.terraform.io/providers/hashicorp/random/latest)
+
+### Terraform Console
+We can see a list of all available terrafrom commands by simply typing `terrafrom`
+
+#### Terrafrom Init 
+At the start of terrafrom project we will run `terrafrom init` to download the binaries of terrafrom providers that we'll use in the project.
+
+#### Terraform Plan 
+
+`terrafrom plan`
+
+this will generate out a changeset , about state of infrastructre  and what will be changed .
+
+We can output these changeset i.e "plan" to passed to an apply , but often you can  ignore outputing.
+
+#### Terrafrom Apply
+
+`terrafrom apply`
+
+this will run a plan and pass the changeset to be executed by terrafrom. 
+Apply should prompt us for yes or no 
+
+if we want to automatically approve apply we can provide auto approve  flag i.e `terrafrom apply --auto-approve`
+
+#### Terrafrom Lock Files
+
+`terrafrom.lock.hcl` contains the locked version of providers or  modules that should be used in this project.
+
+the terrafrom lock files **should be commited** to your  version conntrol system i.e Github 
+
+#### Terrafrom State Files 
+
+`terrafrom.tfstate` contains information about the current status of your infrastructure and **should't be commited** to your VCS.
+this file contains sensitive data .
+if you lose the file , you lose knowing the state of your infrastructure.
+
+`terrafrom.tfstate.backup` is the previous state file state .
+
+### Terrafrom Directory 
+`.terrafrom`  dirctory contains binaries of terrafrom providers.
+
+
+
+
+
