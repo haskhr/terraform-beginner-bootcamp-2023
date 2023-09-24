@@ -13,7 +13,7 @@ The General Format
 - **MINOR** version when you add functionality in a backward compatible manner
 - **PATCH** version when you make backward compatible bug fixes
 
-## [Installation of Terrafrom CLI](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+## [Installation of terraform CLI](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 
 ### Consideration with Terraform CLI changes
 The Terraform installation instruction has been changed due to gpg keyring changes . So we need to refer to the latest install CLI instruction via terraform documention and change the script for install 
@@ -44,7 +44,7 @@ UBUNTU_CODENAME=jammy
 ### Refractoing into Bash script
 while fixing the Terraform CLI keyring depreciation issue we notice that bash scripts were considerable amount more code . so we decided to create a bash script to install Terraform CLI.
 
-the bash script is located her : [./bin/install_terraform_cli](./bin/install_terrafrom_cli)
+the bash script is located her : [./bin/install_terraform_cli](./bin/install_terraform_cli)
 
 - this will keep Gitpod task file[ .gitpod.yml ](.gitpod.yml) tidy.
 - this will allow us to easy debug and execute manuall Terraform CLI Install 
@@ -159,53 +159,59 @@ we'll need to generate AWS CLI credits from IAM user in order to  use  AWS CLI
 
 Terraform sources their providers and modules from terraform registery located at [registery.terraform.io](https://registry.terraform.io/) 
 
-- **Providers** is an interface APIs that will allow you to cretae resources in terrafrom .
+- **Providers** is an interface APIs that will allow you to cretae resources in terraform .
 
 - **Modules** is a way to make a large amount of terraform code modular,portable and sharable . 
 
-[Random Terrafrom Provider ](https://registry.terraform.io/providers/hashicorp/random/latest)
+[Random terraform Provider ](https://registry.terraform.io/providers/hashicorp/random/latest)
 
 ### Terraform Console
-We can see a list of all available terrafrom commands by simply typing `terrafrom`
+We can see a list of all available terraform commands by simply typing `terraform`
 
-#### Terrafrom Init 
-At the start of terrafrom project we will run `terrafrom init` to download the binaries of terrafrom providers that we'll use in the project.
+#### terraform Init 
+At the start of terraform project we will run `terraform init` to download the binaries of terraform providers that we'll use in the project.
 
 #### Terraform Plan 
 
-`terrafrom plan`
+`terraform plan`
 
 this will generate out a changeset , about state of infrastructre  and what will be changed .
 
 We can output these changeset i.e "plan" to passed to an apply , but often you can  ignore outputing.
 
-#### Terrafrom Apply
+#### Terraform Apply
 
-`terrafrom apply`
+`terraform apply`
 
-this will run a plan and pass the changeset to be executed by terrafrom. 
+this will run a plan and pass the changeset to be executed by terraform. 
 Apply should prompt us for yes or no 
 
-if we want to automatically approve apply we can provide auto approve  flag i.e `terrafrom apply --auto-approve`
+if we want to automatically approve apply we can provide auto approve  flag i.e `terraform apply --auto-approve`
 
-#### Terrafrom Lock Files
+#### Terraform Destroy
 
-`terrafrom.lock.hcl` contains the locked version of providers or  modules that should be used in this project.
+`terraform destroy` will destroy the resources created in the apply .
+and it can use with auto approve flag for skipping prompt i.e `terraform destroy --auto-approve`
 
-the terrafrom lock files **should be commited** to your  version conntrol system i.e Github 
+##### terraform Lock Files
 
-#### Terrafrom State Files 
+`terraform.lock.hcl` contains the locked version of providers or  modules that should be used in this project.
 
-`terrafrom.tfstate` contains information about the current status of your infrastructure and **should't be commited** to your VCS.
+the terraform lock files **should be commited** to your  version conntrol system i.e Github 
+
+##### terraform State Files 
+
+`terraform.tfstate` contains information about the current status of your infrastructure and **should't be commited** to your VCS.
 this file contains sensitive data .
 if you lose the file , you lose knowing the state of your infrastructure.
 
-`terrafrom.tfstate.backup` is the previous state file state .
+`terraform.tfstate.backup` is the previous state file state .
 
-### Terrafrom Directory 
-`.terrafrom`  dirctory contains binaries of terrafrom providers.
-
-
-
+#### terraform Directory 
+`.terraform`  dirctory contains binaries of terraform providers.
+#### Terrafrom Random providers 
+we have used terrafrom random provider to generate random string then to be used as a s3 name when creating s3 bucket using [aws provider](https://registry.terraform.io/providers/hashicorp/aws/latest)
+but when creating s3 bucket it was rejected as s3 naming has some rule ***not to use any UPPER case letters*** in S3 bucket name 
+the workaround to adjust random provider to only generate lower letters only as per [documentaion](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) to set `lower` to `true` and `upper` to `false`
 
 
