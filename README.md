@@ -209,8 +209,9 @@ if you lose the file , you lose knowing the state of your infrastructure.
 
 #### terraform Directory 
 `.terraform`  dirctory contains binaries of terraform providers.
-
-
-
+#### Terrafrom Random providers 
+we have used terrafrom random provider to generate random string then to be used as a s3 name when creating s3 bucket using [aws provider](https://registry.terraform.io/providers/hashicorp/aws/latest)
+but when creating s3 bucket it was rejected as s3 naming has some rule ***not to use any UPPER case letters*** in S3 bucket name 
+the workaround to adjust random provider to only generate lower letters only as per [documentaion](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) to set `lower` to `true` and `upper` to `false`
 
 
