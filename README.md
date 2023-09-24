@@ -214,4 +214,26 @@ we have used terrafrom random provider to generate random string then to be used
 but when creating s3 bucket it was rejected as s3 naming has some rule ***not to use any UPPER case letters*** in S3 bucket name 
 the workaround to adjust random provider to only generate lower letters only as per [documentaion](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) to set `lower` to `true` and `upper` to `false`
 
+## Issue with Terraform cloud login and Gitpod Workspace
+when attemting to `terrafrom login` it will launch a bash wiswig view but it doesn't work as expected with Gitpod Vscode in the browser 
+the workaround is to genetare a token in terrafrom cloud manually 
+```
+https://app.terraform.io/app/settings/tokens
+```
+then create and open the file manually here 
+
+```sh
+touch /home/gitpod/.terraform.d/credentials.tfrc.json
+open  /home/gitpod/.terraform.d/credentials.tfrc.json
+```
+provide the follwoing code (replace your token in the file )
+```json
+{
+  "credentials": {
+    "app.terraform.io": {
+      "token": "token"
+    }
+  }
+}
+```
 
