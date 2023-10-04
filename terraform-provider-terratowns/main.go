@@ -258,6 +258,8 @@ func resourceHouseUpdate(ctx context.Context, d *schema.ResourceData, m interfac
 	payload := map[string]interface{}{
 		"name": d.Get("name").(string),
 		"description": d.Get("description").(string),
+		"domain_name": d.Get("domain_name").(string),
+		"town": d.Get("town").(string),
 		"content_version": d.Get("content_version").(int),
 	}
 	payloadBytes, err := json.Marshal(payload)
@@ -284,6 +286,8 @@ func resourceHouseUpdate(ctx context.Context, d *schema.ResourceData, m interfac
 		return diag.FromErr(err)
 	}
 	defer resp.Body.Close()
+
+	
 
 	// StatusOK = 200 HTTP Response Code
 	if resp.StatusCode != http.StatusOK {
