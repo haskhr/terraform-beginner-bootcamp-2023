@@ -4,12 +4,10 @@ package main
 
 // fmt is short format, it contains functions for formatted I/O.
 import (
-
 	"bytes"
 	"context"
 	"encoding/json"
 	"net/http"
-
 	"log"
 	"fmt"
 	"github.com/google/uuid"
@@ -48,7 +46,7 @@ func Provider() *schema.Provider {
 			"endpoint": {
 				Type: schema.TypeString,
 				Required: true,
-				Description: "The endpoint for the external service",
+				Description: "The endpoint for hte external service",
 			},
 			"token": {
 				Type: schema.TypeString,
@@ -98,7 +96,6 @@ func Resource() *schema.Resource {
 		ReadContext: resourceHouseRead,
 		UpdateContext: resourceHouseUpdate,
 		DeleteContext: resourceHouseDelete,
-
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type: schema.TypeString,
@@ -128,12 +125,10 @@ func Resource() *schema.Resource {
 		},
 	}
 	log.Print("Resource:start")
-
 	return resource
 }
 
 func resourceHouseCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-
 	log.Print("resourceHouseCreate:start")
 	var diags diag.Diagnostics
 
@@ -189,13 +184,10 @@ func resourceHouseCreate(ctx context.Context, d *schema.ResourceData, m interfac
 
 	log.Print("resourceHouseCreate:end")
 
-
-
 	return diags
 }
 
 func resourceHouseRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-
 	log.Print("resourceHouseRead:start")
 	var diags diag.Diagnostics
 
@@ -234,7 +226,7 @@ func resourceHouseRead(ctx context.Context, d *schema.ResourceData, m interface{
 		d.Set("description",responseData["description"].(string))
 		d.Set("domain_name",responseData["domain_name"].(string))
 		d.Set("content_version",responseData["content_version"].(float64))
-	} else if resp.StatusCode != http.StatusNotFound {
+	} else if resp.StatusCode == http.StatusNotFound {
 		d.SetId("")
 	} else if resp.StatusCode != http.StatusOK {
 		return diag.FromErr(fmt.Errorf("failed to read home resource, status_code: %d, status: %s, body %s", resp.StatusCode, resp.Status, responseData))
@@ -242,12 +234,10 @@ func resourceHouseRead(ctx context.Context, d *schema.ResourceData, m interface{
 
 	log.Print("resourceHouseRead:end")
 
-
 	return diags
 }
 
 func resourceHouseUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-
 	log.Print("resourceHouseUpdate:start")
 	var diags diag.Diagnostics
 
@@ -258,8 +248,6 @@ func resourceHouseUpdate(ctx context.Context, d *schema.ResourceData, m interfac
 	payload := map[string]interface{}{
 		"name": d.Get("name").(string),
 		"description": d.Get("description").(string),
-		"domain_name": d.Get("domain_name").(string),
-		"town": d.Get("town").(string),
 		"content_version": d.Get("content_version").(int),
 	}
 	payloadBytes, err := json.Marshal(payload)
@@ -287,11 +275,15 @@ func resourceHouseUpdate(ctx context.Context, d *schema.ResourceData, m interfac
 	}
 	defer resp.Body.Close()
 
-	
+	// parse response JSON
+	var responseData map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&responseData);  err != nil {
+		return diag.FromErr(err)
+	}
 
 	// StatusOK = 200 HTTP Response Code
 	if resp.StatusCode != http.StatusOK {
-		return diag.FromErr(fmt.Errorf("failed to update home resource, status_code: %d, status: %s", resp.StatusCode, resp.Status))
+		return diag.FromErr(fmt.Errorf("failed to update home resource, status_code: %d, status: %s, body %s", resp.StatusCode, resp.Status, responseData))
 	}
 
 	log.Print("resourceHouseUpdate:end")
@@ -299,12 +291,10 @@ func resourceHouseUpdate(ctx context.Context, d *schema.ResourceData, m interfac
 	d.Set("name",payload["name"])
 	d.Set("description",payload["description"])
 	d.Set("content_version",payload["content_version"])
-
 	return diags
 }
 
 func resourceHouseDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-
 	log.Print("resourceHouseDelete:start")
 	var diags diag.Diagnostics
 
@@ -340,6 +330,5 @@ func resourceHouseDelete(ctx context.Context, d *schema.ResourceData, m interfac
 	d.SetId("")
 
 	log.Print("resourceHouseDelete:end")
-
 	return diags
 }
