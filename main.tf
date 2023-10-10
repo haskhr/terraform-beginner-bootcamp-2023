@@ -28,36 +28,36 @@ provider "terratowns" {
   token = var.terratowns_access_token
 }
 
-module "home_arcanum_hosting" {
+module "home_the-nomad-pad_hosting" {
   source = "./modules/terrahome_aws"
   user_uuid = var.teacherseat_user_uuid
   public_path = var.arcanum.public_path
   content_version = var.arcanum.content_version
 }
 
-resource "terratowns_home" "home" {
-  name = "How to play Arcanum in 2023!"
+resource "terratowns_home" "the-nomad-pad" {
+  name = "Visit Egypt "
   description = <<DESCRIPTION
-Arcanum is a game from 2001 that shipped with alot of bugs.
+Egypt is one of the most famous touristic places such as the historical places , nice beaches and famous big cities to visit . 
 DESCRIPTION
-  domain_name = module.home_arcanum_hosting.domain_name
-  town = "missingo"
+  domain_name = module.home_the-nomad-pad_hosting.domain_name
+  town = "the-nomad-pad"
   content_version = var.arcanum.content_version
 }
 
-module "home_payday_hosting" {
+module "home_cooker-cove_hosting" {
   source = "./modules/terrahome_aws"
   user_uuid = var.teacherseat_user_uuid
   public_path = var.payday.public_path
   content_version = var.payday.content_version
 }
 
-resource "terratowns_home" "home_payday" {
+resource "terratowns_home" "cooker-cover" {
   name = "Do you know about Egyptian Sweets"
   description = <<DESCRIPTION
 Egypt is one of the most famous countries in ME producing specilaized variarites of sweets
 DESCRIPTION
-  domain_name = module.home_payday_hosting.domain_name
-  town = "missingo"
+  domain_name = module.home_cooker-cove_hosting.domain_name
+  town = "cooker-cove"
   content_version = var.payday.content_version
 }

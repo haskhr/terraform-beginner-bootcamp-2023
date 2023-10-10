@@ -5,5 +5,5 @@ arcanum = {
 }
 payday = {
   public_path = "/workspace/terraform-beginner-bootcamp-2023/public/payday"
-  content_version = 2 
+  content_version = 3 
 }
